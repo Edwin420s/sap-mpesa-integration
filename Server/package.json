@@ -1,0 +1,38 @@
+{
+  "name": "sap-mpesa-server",
+  "version": "1.0.0",
+  "description": "Backend for SAP M-Pesa Integration",
+  "main": "start-services.js",
+  "scripts": {
+    "start": "node start-services.js",
+    "dev": "node start-services.js",
+    "dev:gateway": "nodemon api-gateway/index.js",
+    "dev:auth": "nodemon auth-service/index.js",
+    "dev:mpesa": "nodemon mpesa-service/index.js",
+    "dev:sap": "nodemon sap-service/index.js",
+    "dev:transaction": "nodemon transaction-service/index.js",
+    "dev:notification": "nodemon notification-service/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-validator": "^6.15.0",
+    "helmet": "^5.1.0",
+    "http-proxy-middleware": "^2.0.9",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.4",
+    "morgan": "^1.10.0",
+    "node-cron": "^3.0.0",
+    "redis": "^4.1.0",
+    "winston": "^3.8.0"
+  },
+  "devDependencies": {
+    "concurrently": "^7.2.1",
+    "nodemon": "^2.0.16"
+  }
+}

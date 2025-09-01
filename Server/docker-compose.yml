@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # API Gateway
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - MPESA_SERVICE_URL=http://mpesa-service:3002
+      - SAP_SERVICE_URL=http://sap-service:3003
+      - TRANSACTION_SERVICE_URL=http://transaction-service:3004
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3005
+    depends_on:
+      - auth-service
+      - mpesa-service
+      - sap-service
+      - transaction-service
+      - notification-service
+
+  # Auth Service
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      - JWT_SECRET=your_jwt_secret_here
+
+  # M-Pesa Service
+  mpesa-service:
+    build: ./mpesa-service
+    ports:
+      - "3002:3002"
+    environment:
+      - MPESA_CONSUMER_KEY=your_consumer_key
+      - MPESA_CONSUMER_SECRET=your_consumer_secret
+      - MPESA_SHORTCODE=your_shortcode
+      - MPESA_PASSKEY=your_passkey
+      - MPESA_ENVIRONMENT=sandbox
+      - API_BASE_URL=http://localhost:3000
+
+  # SAP Service
+  sap-service:
+    build: ./sap-service
+    ports:
+      - "3003:3003"
+    environment:
+      - SAP_BASE_URL=your_sap_base_url
+      - SAP_USERNAME=your_sap_username
+      - SAP_PASSWORD=your_sap_password
+
+  # Transaction Service
+  transaction-service:
+    build: ./transaction-service
+    ports:
+      - "3004:3004"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/sap-mpesa
+
+  # Notification Service
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "3005:3005"
+
+  # MongoDB
+  mongo:
+    image: mongo:5
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # Redis (for caching)
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mongo_data:
+  redis_data:
